@@ -1,0 +1,5 @@
+id: 0ux0t2y7gjps7jsz83qae5xofm4xyi4na9lgsfhanutuvyi4
+name: zixelwolf
+license: MIT
+description: Wolf3D raycaster made with Zig
+root_dependencies:
