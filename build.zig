@@ -16,7 +16,7 @@ pub fn build(b: *std.build.Builder) void {
     const exe = b.addExecutable("zixelwolf", "src/main.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
-    exe.addPackage(.{ .name = "lua", .path = .{ .path="thirdparty/zoltan/src/lua.zig" }});
+    exe.addPackage(.{ .name = "lua", .path = .{ .path = "thirdparty/zoltan/src/lua.zig" } });
     addLuaLib(exe, "thirdparty/zoltan/");
     exe.install();
 
@@ -30,7 +30,7 @@ pub fn build(b: *std.build.Builder) void {
     run_step.dependOn(&run_cmd.step);
 
     const exe_tests = b.addTest("src/main.zig");
-    exe_tests.addPackage(.{ .name = "lua", .path = .{ .path="thirdparty/zoltan/src/lua.zig" }});
+    exe_tests.addPackage(.{ .name = "lua", .path = .{ .path = "thirdparty/zoltan/src/lua.zig" } });
     addLuaLib(exe_tests, "thirdparty/zoltan/");
     exe_tests.setBuildMode(mode);
     exe_tests.setTarget(target);
