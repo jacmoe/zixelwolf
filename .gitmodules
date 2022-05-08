@@ -1,0 +1,3 @@
+[submodule "thirdparty/zoltan"]
+	path = thirdparty/zoltan
+	url = git@github.com:ranciere/zoltan.git
