@@ -30,11 +30,11 @@ pub fn build(b: *std.build.Builder) void {
     run_step.dependOn(&run_cmd.step);
 
     const exe_tests = b.addTest("src/main.zig");
-    exe_tests.setTarget(target);
+    exe_tests.addPackage(.{ .name = "lua", .path = .{ .path="thirdparty/zoltan/src/lua.zig" }});
+    addLuaLib(exe_tests, "thirdparty/zoltan/");
     exe_tests.setBuildMode(mode);
-    const lua_tests = b.addTest("thirdparty/zoltan/src/tests.zig");
-    addLuaLib(lua_tests, "thirdparty/zoltan/");
-    lua_tests.setBuildMode(mode);
+    exe_tests.setTarget(target);
+
     deps.addAllTo(exe);
 
     const test_step = b.step("test", "Run unit tests");

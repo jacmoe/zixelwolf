@@ -21,3 +21,20 @@ pub fn main() anyerror!void {
 test "basic test" {
     try std.testing.expectEqual(10, 3 + 7);
 }
+
+test "lua test" {
+    const expectEqual = std.testing.expectEqual;
+    var lua = try Lua.init(std.testing.allocator);
+    defer lua.destroy();
+
+    lua.openLibs();
+
+    lua.set("int32", 42);
+    var int = lua.get(i32, "int32");
+    try expectEqual(int, 42);
+
+    // lua.set("string", "I'm a string");
+    // const str = lua.get([] const u8, "string");
+    // const e_str = "I'm a string";
+    // try expectEqual(str, e_str);
+}
