@@ -1,5 +1,6 @@
 const std = @import("std");
 const deps = @import("./deps.zig");
+const addLuaLib = @import("thirdparty/zoltan/build.zig").addLuaLibrary;
 
 pub fn build(b: *std.build.Builder) void {
     // Standard target options allows the person running `zig build` to choose
@@ -15,6 +16,8 @@ pub fn build(b: *std.build.Builder) void {
     const exe = b.addExecutable("zixelwolf", "src/main.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
+    exe.addPackage(.{ .name = "lua", .path = .{ .path="thirdparty/zoltan/src/lua.zig" }});
+    addLuaLib(exe, "thirdparty/zoltan/");
     exe.install();
 
     const run_cmd = exe.run();
@@ -29,6 +32,9 @@ pub fn build(b: *std.build.Builder) void {
     const exe_tests = b.addTest("src/main.zig");
     exe_tests.setTarget(target);
     exe_tests.setBuildMode(mode);
+    const lua_tests = b.addTest("thirdparty/zoltan/src/tests.zig");
+    addLuaLib(lua_tests, "thirdparty/zoltan/");
+    lua_tests.setBuildMode(mode);
     deps.addAllTo(exe);
 
     const test_step = b.step("test", "Run unit tests");

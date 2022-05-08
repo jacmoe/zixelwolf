@@ -3,6 +3,6 @@ name: zixelwolf
 license: MIT
 description: Wolf3D raycaster made with Zig
 root_dependencies:
- - src: git git@github.com:jacmoe/zixelator.git
- - src: git git@github.com:jacmoe/zbasic.git
- - src: git git@github.com:jacmoe/zallegro.git
+ - src: git https://github.com/jacmoe/zallegro.git
+ - src: git https://github.com/jacmoe/zixelator.git
+
