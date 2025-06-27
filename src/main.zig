@@ -1,7 +1,23 @@
 const std = @import("std");
 const zixelwolf = @import("zixelwolf");
 
+const zlua = @import("zlua");
+
+const Lua = zlua.Lua;
+
 pub fn main() !void {
+    // Create an allocator
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    defer _ = gpa.deinit();
+
+    // Initialize the Lua vm
+    var lua = try Lua.init(allocator);
+    defer lua.deinit();
+
+    // Add an integer to the Lua stack and retrieve it
+    lua.pushInteger(42);
+    std.debug.print("Lua: {}\n", .{try lua.toInteger(1)});
     // Prints to stderr, ignoring potential errors.
     std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
     try zixelwolf.bufferedPrint();
