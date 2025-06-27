@@ -10,6 +10,14 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const sdl_dep = b.dependency("sdl", .{
+        .target = target,
+        .optimize = optimize,
+        .lto = optimize != .Debug,
+    });
+    const sdl_lib = sdl_dep.artifact("SDL3");
+    mod.linkLibrary(sdl_lib);
+
     const lua_dep = b.dependency("zlua", .{
         .target = target,
         .optimize = optimize,
@@ -26,6 +34,7 @@ pub fn build(b: *std.Build) void {
             },
         }),
     });
+
 
     // add the zlua module and lua artifact
     exe.root_module.addImport("zlua", lua_dep.module("zlua"));
