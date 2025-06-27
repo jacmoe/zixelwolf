@@ -42,6 +42,11 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const lua_dep = b.dependency("zlua", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
     // Here we define an executable. An executable needs to have a root module
     // which needs to expose a `main` function. While we could add a main function
     // to the module defined above, it's sometimes preferable to split business
@@ -83,6 +88,9 @@ pub fn build(b: *std.Build) void {
             },
         }),
     });
+
+    // add the zlua module and lua artifact
+    exe.root_module.addImport("zlua", lua_dep.module("zlua"));
 
     // This declares intent for the executable to be installed into the
     // install prefix when running `zig build` (i.e. when executing the default
