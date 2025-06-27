@@ -4,3 +4,4 @@
 /.zigmod/
 /deps.zig
 /thirdparty/zoltan/src/zig-cache/
+.zig-cache

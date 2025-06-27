@@ -1,40 +1,26 @@
 const std = @import("std");
-const Lua = @import("lua").Lua;
+const zixelwolf = @import("zixelwolf");
 
-pub fn main() anyerror!void {
-    var lua = try Lua.init(std.testing.allocator);
-    defer lua.destroy();
-
-    lua.openLibs();
-
-    _ = lua.run("print ('Hello from Lua!')");
-
-    lua.set("int32", 42);
-    var int = lua.get(i32, "int32");
-    std.log.info("Int: {}", .{int});
-
-    lua.set("string", "I'm a string");
-    const str = lua.get([] const u8, "string");
-    std.log.info("String: {s}", .{str});
+pub fn main() !void {
+    // Prints to stderr, ignoring potential errors.
+    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
+    try zixelwolf.bufferedPrint();
 }
 
-test "basic test" {
-    try std.testing.expectEqual(10, 3 + 7);
+test "simple test" {
+    var list = std.ArrayList(i32).init(std.testing.allocator);
+    defer list.deinit(); // Try commenting this out and see if zig detects the memory leak!
+    try list.append(42);
+    try std.testing.expectEqual(@as(i32, 42), list.pop());
 }
 
-test "lua test" {
-    const expectEqual = std.testing.expectEqual;
-    var lua = try Lua.init(std.testing.allocator);
-    defer lua.destroy();
-
-    lua.openLibs();
-
-    lua.set("int32", 42);
-    var int = lua.get(i32, "int32");
-    try expectEqual(int, 42);
-
-    // lua.set("string", "I'm a string");
-    // const str = lua.get([] const u8, "string");
-    // const e_str = "I'm a string";
-    // try expectEqual(str, e_str);
+test "fuzz example" {
+    const Context = struct {
+        fn testOne(context: @This(), input: []const u8) anyerror!void {
+            _ = context;
+            // Try passing `--fuzz` to `zig build test` and see if it manages to fail this test case!
+            try std.testing.expect(!std.mem.eql(u8, "canyoufindme", input));
+        }
+    };
+    try std.testing.fuzz(Context{}, Context.testOne, .{});
 }
